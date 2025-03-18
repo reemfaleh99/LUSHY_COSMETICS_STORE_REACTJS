@@ -1,0 +1,12 @@
+export { default as Home } from "./Home.jsx";
+export { default as About } from "./About.jsx";
+export { default as Cosmatics } from "./Cosmatics.jsx";
+export { default as Skin } from "./Skin.jsx";
+export { default as Fragrance } from "./Fragrance.jsx";
+export { default as ProductDetails } from "./ProductDetails.jsx";
+export { default as Cart } from "./Cart.jsx";
+export { default as Gifts } from "./Gifts.jsx";
+export { default as Checkout } from "./Checkout.jsx";
+export { default as Blog } from "./Blog.jsx";
+export { default as Login } from "./auth/Login.jsx";
+export { default as Signup } from "./auth/Signup.jsx";

@@ -1,13 +1,163 @@
-body {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&family=Edu+AU+VIC+WA+NT+Pre:wght@400..700&display=swap");
+
+* {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  font-family: "Montserrat", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+p {
+  font-size: 1rem;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: unset;
+}
+
+img {
+  width: 100%;
+}
+
+section {
+  padding: 30px 30px;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding: 90px 90px;
+  }
+}
+
+.section__title {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+.gift-img::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 0.3);
+  transition: 0.3s;
+}
+
+.gift-img:hover::before {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.common-img::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0%;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0 0 0 / 0.5);
+}
+
+@layer components {
+  .sub-menu {
+    @apply absolute  top-[4.2rem] p-4 rounded-[6px] origin-[50%_-170px] backdrop-blur bg-white/[0.9];
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  z-index: 49;
+}
+
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
+  z-index: 50;
+  overflow: hidden;
+}
+
+.login {
+  background-image: url("assets/imgs/login.avif");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+}
+
+body.pause-scroll {
+  overflow-y: hidden;
+}
+
+.mobile__menu {
+  display: block;
+}
+.active__menu {
+  display: block;
+}
+
+.slider {
+  width: 100%;
+  height: 10px;
+}
+
+.slider .thumb {
+  width: 23px;
+  height: 23px;
+  cursor: grab;
+  background: white;
+  border-radius: 50%;
+  border: 2px solid greenyellow;
+  top: -6px;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  width: 100%;
 }
