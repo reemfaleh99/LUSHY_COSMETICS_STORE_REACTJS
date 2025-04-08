@@ -41,7 +41,7 @@ const Login = () => {
       console.log(user);
 
       setLoading(false);
-      toast.success("Account Created");
+      toast.success("Welcome back");
       navigate("/home");
     } catch (error) {
       setLoading(false);

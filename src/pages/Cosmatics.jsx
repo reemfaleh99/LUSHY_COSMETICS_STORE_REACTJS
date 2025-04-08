@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/commonSection/CommonSection";
 
-import products from "../assets/data/items";
 import { filter } from "../assets/data/filter";
 
 import ProductList from "../components/product/ProductList";
 import AccordionFilter from "../components/filter/AccordionFilter";
+import useGetData from "../custom-hooks/useGetData";
 
 const Cosmatics = () => {
+  const { data: products } = useGetData("products");
+
   const [makeupProducts, setMakeupProducts] = useState(products);
   const [show, setShow] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -19,7 +21,7 @@ const Cosmatics = () => {
 
   useEffect(() => {
     const filterMakeupProduct = products.filter(
-      (item) => item.type === "cosmatics"
+      (item) => item.category === "cosmatics"
     );
     setMakeupProducts(filterMakeupProduct);
 
@@ -34,7 +36,7 @@ const Cosmatics = () => {
     return () => {
       document.removeEventListener("mousedown", handler);
     };
-  }, []);
+  }, [products]);
 
   const showAccordion = () => {
     setShow(!show);
@@ -45,28 +47,28 @@ const Cosmatics = () => {
 
     if (filterValue === "all") {
       const filteredProduct = products.filter(
-        (item) => item.type === "cosmatics"
+        (item) => item.category === "cosmatics"
       );
       setMakeupProducts(filteredProduct);
     }
 
     if (filterValue === "featured") {
       const filteredProduct = products.filter(
-        (item) => item.category === "feature" && item.type === "cosmatics"
+        (item) => item.type === "featured" && item.category === "cosmatics"
       );
       setMakeupProducts(filteredProduct);
     }
 
     if (filterValue === "bestselling") {
       const filteredProduct = products.filter(
-        (item) => item.category === "bestseller" && item.type === "cosmatics"
+        (item) => item.type === "bestselling" && item.category === "cosmatics"
       );
       setMakeupProducts(filteredProduct);
     }
 
     if (filterValue === "newest") {
       const filteredProduct = products.filter(
-        (item) => item.category === "new" && item.type === "cosmatics"
+        (item) => item.type === "newest" && item.category === "cosmatics"
       );
       setMakeupProducts(filteredProduct);
     }
@@ -102,7 +104,9 @@ const Cosmatics = () => {
   };
 
   const applyFilters = (brands, departments, priceRange) => {
-    let filteredProducts = products.filter((item) => item.type === "cosmatics");
+    let filteredProducts = products.filter(
+      (item) => item.category === "cosmatics"
+    );
 
     if (brands.length > 0) {
       filteredProducts = filteredProducts.filter((item) =>

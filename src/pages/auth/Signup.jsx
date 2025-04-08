@@ -39,41 +39,50 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const useCredential = await createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
+      const user = userCredential.user;
 
-      const user = useCredential.user;
+      if (!file) {
+        throw new Error("Please select an image.");
+      }
 
       const storageRef = ref(storage, `images/${Date.now() + username}`);
       const uploadTask = uploadBytesResumable(storageRef, file);
 
       uploadTask.on(
-        (e) => {
-          toast.error(e.message);
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          toast.error(error.message);
+          setLoading(false);
         },
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(user, {
-              displayName: username,
-              photoURL: downloadURL,
-            });
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
 
-            await setDoc(doc(db, "users", user.uid), {
-              uid: user.uid,
-              displayName: username,
-              email,
-              photoURL: downloadURL,
-            });
+          await updateProfile(user, {
+            displayName: username,
+            photoURL: downloadURL,
           });
+
+          await setDoc(doc(db, "users", user.uid), {
+            uid: user.uid,
+            displayName: username,
+            email,
+            photoURL: downloadURL,
+          });
+
+          // Reload user to reflect changes
+          await auth.currentUser.reload();
+
+          setLoading(false);
+          toast.success("Account Created Successfully!");
+          navigate("/login");
         }
       );
-
-      setLoading(false);
-      toast.success("Account Created");
-      navigate("/login");
     } catch (error) {
       setLoading(false);
       toast.error(error.message);

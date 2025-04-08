@@ -4,9 +4,11 @@ import ProductList from "../components/product/ProductList";
 import { filter } from "../assets/data/filter";
 import CommonSection from "../components/commonSection/CommonSection";
 import Helmet from "../components/Helmet";
-import products from "../assets/data/items";
+import useGetData from "../custom-hooks/useGetData";
 
 const Skin = () => {
+  const { data: products } = useGetData("products");
+
   const [skinProducts, setSkinProducts] = useState(products);
   const [show, setShow] = useState(false);
   const [selectedBrands, setSelectedBrands] = useState([]);
@@ -16,7 +18,9 @@ const Skin = () => {
   const filterRef = useRef(null);
 
   useEffect(() => {
-    const filterSkinProduct = products.filter((item) => item.type === "skin");
+    const filterSkinProduct = products.filter(
+      (item) => item.category === "skin"
+    );
 
     setSkinProducts(filterSkinProduct);
 
@@ -31,7 +35,7 @@ const Skin = () => {
     return () => {
       document.removeEventListener("mousedown", handler);
     };
-  }, []);
+  }, [products]);
 
   const showAccordion = () => {
     setShow(!show);

@@ -73,7 +73,7 @@ const Navbar = ({ toggleFav }) => {
       });
   };
 
-  const totalCartQuantity = useSelector((state) => state.cart.totalQuantity);
+  const totalCartQuantity = useSelector((state) => state.cart.cartItems.length);
   const totalFavQuantity = useSelector((state) => state.fav.totalQuantity);
 
   const subMenuAnimate = {
@@ -189,17 +189,16 @@ const Navbar = ({ toggleFav }) => {
             onClick={toggleShowDropdown}
             className="lg:ml-5 w-10 h-10 rounded-full flex items-center justify-center bg-green-100 hover:bg-green-200 transition"
           >
-            {/* <img
+            <img
               src={
                 currentUser ? (
                   currentUser.photoURL
                 ) : (
-                  
+                  <AiOutlineUser className="w-6 h-6" />
                 )
               }
-              alt=""
-            /> */}
-            <AiOutlineUser className="w-6 h-6" />
+              alt="heh"
+            />
           </button>
           {showDropdown && (
             <div
@@ -225,12 +224,22 @@ const Navbar = ({ toggleFav }) => {
                   >
                     Login
                   </Link>
+                  <br />
+                  <Link
+                    to="/dashboard"
+                    className="hover:text-green-500"
+                    onClick={() => setShowDropdown(false)}
+                  >
+                    Dashboard
+                  </Link>
                 </div>
               )}
             </div>
           )}
           <div>
-            <h5 className="font-semibold">reem</h5>
+            <h5 className="font-semibold">
+              {currentUser && currentUser.displayName}
+            </h5>
             <p className="text-sm text-gray-500 hover:text-gray-700 cursor-pointer">
               View profile
             </p>

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 
-import products from "../../assets/data/items";
+import useGetData from "../../custom-hooks/useGetData";
 
 const Searchbar = () => {
+  const { data: products } = useGetData("products");
+
   const [active, setActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const searchRef = useRef(null);
@@ -21,7 +23,7 @@ const Searchbar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [products]);
 
   const filteredProducts = products.filter((product) =>
     product.productName.toLowerCase().includes(searchTerm.toLowerCase())

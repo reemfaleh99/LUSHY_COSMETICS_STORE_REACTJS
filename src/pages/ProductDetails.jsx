@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import products from "../assets/data/items";
 import AccordionFilter from "../components/filter/AccordionFilter";
 import Helmet from "../components/Helmet";
 
@@ -9,18 +8,38 @@ import ProductList from "../components/product/ProductList";
 import { useDispatch } from "react-redux";
 import { cartAction } from "../redux/slices/cartSlice";
 import { toast } from "react-toastify";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase.config";
+import useGetData from "../custom-hooks/useGetData";
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
 
+  const [product, setProduct] = useState({});
+
+  const [quantity, setQuantity] = useState(1);
   const { id } = useParams();
-  const product = products.find((item) => item.id === id);
+
+  const { data: products } = useGetData("products");
+
   const { productName, price, imgUrl, subImgs, category, type } = product;
   const relatedProducts = products.filter((item) => item.type === type);
   const [currentImg, setCurrentImg] = useState(imgUrl);
-  const [quantity, setQuantity] = useState(1);
+  const docRef = doc(db, "products", id);
 
-  useEffect(() => setCurrentImg(imgUrl), [imgUrl]);
+  useEffect(() => {
+    const getProduct = async () => {
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        setProduct(docSnap.data());
+        setCurrentImg(imgUrl);
+      } else {
+        console.log("nothing");
+      }
+    };
+    getProduct();
+  }, []);
 
   const changePic = (newImg) => {
     setCurrentImg(newImg);

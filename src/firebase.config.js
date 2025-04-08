@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDzLZ2wCdYMRHlInOd7wMwxIMDGvP3DdMk",
-  authDomain: "lushystore-8b939.firebaseapp.com",
-  projectId: "lushystore-8b939",
-  storageBucket: "lushystore-8b939.firebasestorage.app",
-  messagingSenderId: "883023865349",
-  appId: "1:883023865349:web:31c9b8ba47b991043ade6c",
+  apiKey: "AIzaSyCx3Do_IoixoWAdjF3ibJRuQuD7RlaanaQ",
+  authDomain: "multimart-f7cf8.firebaseapp.com",
+  projectId: "multimart-f7cf8",
+  storageBucket: "multimart-f7cf8.appspot.com",
+  messagingSenderId: "363816252220",
+  appId: "1:363816252220:web:cee914b6fd5a7d8c1ca439",
 };
 
 const app = initializeApp(firebaseConfig);

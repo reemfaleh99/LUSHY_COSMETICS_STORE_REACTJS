@@ -2,13 +2,15 @@ import React, { useEffect, useRef, useState } from "react";
 import Helmet from "../components/Helmet";
 import CommonSection from "../components/commonSection/CommonSection";
 
-import products from "../assets/data/items";
 import { filter } from "../assets/data/filter";
 
 import ProductList from "../components/product/ProductList";
 import AccordionFilter from "../components/filter/AccordionFilter";
+import useGetData from "../custom-hooks/useGetData";
 
 const Fragrance = () => {
+  const { data: products } = useGetData("products");
+
   const [fragranceProducts, setFragranceProducts] = useState(products);
   const [show, setShow] = useState(false);
 
@@ -32,7 +34,7 @@ const Fragrance = () => {
     return () => {
       document.removeEventListener("mousedown", handler);
     };
-  }, []);
+  }, [products]);
 
   const showAccordion = () => {
     setShow(!show);

@@ -17,6 +17,11 @@ import {
 
 import ProtectedRoute from "./ProtectedRoute";
 
+import AddProduct from "../admin/AddProduct";
+import AllProducts from "../admin/AllProducts";
+import Dashboard from "../admin/Dashboard";
+import Users from "../admin/Users.jsx";
+
 const Routers = () => {
   return (
     <Routes>
@@ -32,14 +37,13 @@ const Routers = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/gift" element={<Gifts />} />
       <Route path="/blog" element={<Blog />} />
-      <Route
-        path="/checkout"
-        element={
-          <ProtectedRoute>
-            <Checkout />
-          </ProtectedRoute>
-        }
-      />
+      <Route path="/*" element={<ProtectedRoute />}>
+        <Route path="checkout" element={<Checkout />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="dashboard/all-products" element={<AllProducts />} />
+        <Route path="dashboard/add-products" element={<AddProduct />} />
+        <Route path="dashboard/users" element={<Users />} />
+      </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 
