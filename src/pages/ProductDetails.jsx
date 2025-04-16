@@ -22,7 +22,7 @@ const ProductDetails = () => {
 
   const { data: products } = useGetData("products");
 
-  const { productName, price, imgUrl, subImgs, category, type } = product;
+  const { productName, price, imgUrl, subImgs, category, type, desc } = product;
   const relatedProducts = products.filter((item) => item.type === type);
   const [currentImg, setCurrentImg] = useState(imgUrl);
   const docRef = doc(db, "products", id);
@@ -39,7 +39,7 @@ const ProductDetails = () => {
       }
     };
     getProduct();
-  }, []);
+  }, [docRef, imgUrl]);
 
   const changePic = (newImg) => {
     setCurrentImg(newImg);
@@ -51,7 +51,7 @@ const ProductDetails = () => {
   const items = [
     {
       id: 1,
-      category: "   Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
+      category: "Lorem ipsum, dolor sit amet consectetur adipisicing elit.",
       title: "Lorem",
     },
     {
@@ -69,6 +69,7 @@ const ProductDetails = () => {
         productName: productName,
         price,
         quantity: quantity,
+        desc: desc,
       })
     );
     toast.success("added to cart");
@@ -106,15 +107,10 @@ const ProductDetails = () => {
           <div className="w-full md:w-1/2 relative">
             <h5 className="text-lg font-semibold mb-4">Summary</h5>
             <p className="my-4 font-medium text-gray-600">
-              {productName} / {category}
+              {productName} / {type}
             </p>
             <h4 className="text-2xl font-semibold mb-4">${price}</h4>
-            <p className="mb-8 text-gray-600">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Beatae
-              officiis alias nihil non ut! Eveniet adipisci odio reiciendis
-              aliquam voluptates distinctio aliquid beatae nam deserunt! Ipsam
-              expedita molestias ad natus.
-            </p>
+            <p className="mb-8 text-gray-600">{desc}</p>
             <div className="flex items-center justify-center gap-4 md:gap-10 my-10">
               <div className="flex gap-8 text-2xl border-2 rounded-full py-4 px-8 border-green-400 font-medium">
                 <button

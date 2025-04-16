@@ -23,7 +23,28 @@ const Cosmatics = () => {
     const filterMakeupProduct = products.filter(
       (item) => item.category === "cosmatics"
     );
-    setMakeupProducts(filterMakeupProduct);
+
+    let filteredProducts = filterMakeupProduct;
+
+    if (selectedBrands.length > 0) {
+      filteredProducts = filteredProducts.filter((item) =>
+        selectedBrands.includes(item.brand)
+      );
+    }
+
+    if (selectedDepartments.length > 0) {
+      filteredProducts = filteredProducts.filter((item) =>
+        selectedDepartments.includes(item.department)
+      );
+    }
+
+    filteredProducts = filteredProducts.filter(
+      (item) =>
+        item.price >= selectedPriceRange[0] &&
+        item.price <= selectedPriceRange[1]
+    );
+
+    setMakeupProducts(filteredProducts);
 
     let handler = (e) => {
       if (!filterRef.current.contains(e.target)) {
@@ -36,7 +57,7 @@ const Cosmatics = () => {
     return () => {
       document.removeEventListener("mousedown", handler);
     };
-  }, [products]);
+  }, [products, selectedBrands, selectedDepartments, selectedPriceRange]);
 
   const showAccordion = () => {
     setShow(!show);

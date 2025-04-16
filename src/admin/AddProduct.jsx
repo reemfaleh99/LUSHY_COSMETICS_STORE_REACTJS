@@ -6,6 +6,7 @@ import { db, storage } from "../firebase.config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { collection, addDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/loading/Loading";
 
 const AddProduct = () => {
   const [title, setTitle] = useState("");
@@ -44,7 +45,7 @@ const AddProduct = () => {
             desc: description,
             price: price,
             brand: brand,
-            dept: department,
+            department: department,
             category: category,
             type: type,
             imgUrl: downloadURL,
@@ -64,7 +65,7 @@ const AddProduct = () => {
   return (
     <section>
       {loading ? (
-        <h2>loading...</h2>
+        <Loading />
       ) : (
         <>
           <h6 className="text-xl font-medium">Add Products</h6>

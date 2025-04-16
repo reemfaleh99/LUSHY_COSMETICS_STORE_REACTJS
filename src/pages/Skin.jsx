@@ -16,13 +16,32 @@ const Skin = () => {
   const [selectedPriceRange, setSelectedPriceRange] = useState([10, 200]);
 
   const filterRef = useRef(null);
-
   useEffect(() => {
-    const filterSkinProduct = products.filter(
+    const filterMakeupProduct = products.filter(
       (item) => item.category === "skin"
     );
 
-    setSkinProducts(filterSkinProduct);
+    let filteredProducts = filterMakeupProduct;
+
+    if (selectedBrands.length > 0) {
+      filteredProducts = filteredProducts.filter((item) =>
+        selectedBrands.includes(item.brand)
+      );
+    }
+
+    if (selectedDepartments.length > 0) {
+      filteredProducts = filteredProducts.filter((item) =>
+        selectedDepartments.includes(item.department)
+      );
+    }
+
+    filteredProducts = filteredProducts.filter(
+      (item) =>
+        item.price >= selectedPriceRange[0] &&
+        item.price <= selectedPriceRange[1]
+    );
+
+    setSkinProducts(filteredProducts);
 
     let handler = (e) => {
       if (!filterRef.current.contains(e.target)) {
@@ -35,7 +54,7 @@ const Skin = () => {
     return () => {
       document.removeEventListener("mousedown", handler);
     };
-  }, [products]);
+  }, [products, selectedBrands, selectedDepartments, selectedPriceRange]);
 
   const showAccordion = () => {
     setShow(!show);
@@ -45,27 +64,29 @@ const Skin = () => {
     const filterValue = e.target.value;
 
     if (filterValue === "all") {
-      const filteredProduct = products.filter((item) => item.type === "skin");
+      const filteredProduct = products.filter(
+        (item) => item.category === "skin"
+      );
       setSkinProducts(filteredProduct);
     }
 
     if (filterValue === "featured") {
       const filteredProduct = products.filter(
-        (item) => item.category === "feature" && item.type === "skin"
+        (item) => item.type === "featured" && item.category === "skin"
       );
       setSkinProducts(filteredProduct);
     }
 
     if (filterValue === "bestselling") {
       const filteredProduct = products.filter(
-        (item) => item.category === "bestseller" && item.type === "skin"
+        (item) => item.type === "bestselling" && item.category === "skin"
       );
       setSkinProducts(filteredProduct);
     }
 
     if (filterValue === "newest") {
       const filteredProduct = products.filter(
-        (item) => item.category === "new" && item.type === "skin"
+        (item) => item.type === "newest" && item.category === "skin"
       );
       setSkinProducts(filteredProduct);
     }
@@ -101,7 +122,7 @@ const Skin = () => {
   };
 
   const applyFilters = (brands, departments, priceRange) => {
-    let filteredProducts = products.filter((item) => item.type === "skin");
+    let filteredProducts = products.filter((item) => item.category === "skin");
 
     if (brands.length > 0) {
       filteredProducts = filteredProducts.filter((item) =>
@@ -121,7 +142,6 @@ const Skin = () => {
 
     setSkinProducts(filteredProducts);
   };
-
   const skinFilters = filter.filter(
     (filterItem) => filterItem.category === "skin"
   );

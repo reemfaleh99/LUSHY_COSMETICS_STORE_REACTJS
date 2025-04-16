@@ -32,11 +32,16 @@ const Layout = () => {
         <Navbar toggleFav={toggle} />
       )}
 
-      {show && (
-        <div className={`overlay ${show ? "show" : ""}`} onClick={closeFav}>
-          {show && <AccordionFavorite />}
-        </div>
-      )}
+      <div
+        className={`fixed inset-0 z-40 transition-opacity duration-300 ${
+          show
+            ? "bg-black bg-opacity-40 pointer-events-auto"
+            : "bg-transparent pointer-events-none"
+        }`}
+        onClick={closeFav}
+      >
+        <AccordionFavorite isOpen={show} closeFav={closeFav} />
+      </div>
       <div>
         <Routers />
       </div>

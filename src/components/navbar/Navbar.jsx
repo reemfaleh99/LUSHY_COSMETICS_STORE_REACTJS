@@ -17,15 +17,20 @@ import { Menus } from "../../assets/data/menu";
 import { useSelector } from "react-redux";
 
 import useAuth from "../../custom-hooks/useAuth";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase.config";
+import { signOut, updateProfile } from "firebase/auth";
+import { auth, db } from "../../firebase.config";
+import { storage } from "../../firebase.config";
 
 import { useEffect, useRef, useState } from "react";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { doc, updateDoc } from "firebase/firestore";
 
 const Navbar = ({ toggleFav }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
@@ -95,6 +100,53 @@ const Navbar = ({ toggleFav }) => {
         display: "none",
       },
     },
+  };
+
+  const handlePhotoChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handlePhotoUpload = async () => {
+    if (!selectedFile) return toast.error("No file selected");
+
+    try {
+      setIsUploading(true);
+
+      const storageRef = ref(
+        storage,
+        `profilePics/${Date.now()}_${selectedFile.name}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+      uploadTask.on(
+        "state_changed",
+        null,
+        (error) => {
+          setIsUploading(false);
+          toast.error("Upload failed: " + error.message);
+        },
+        async () => {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+          await updateProfile(auth.currentUser, { photoURL: downloadURL });
+          await updateDoc(doc(db, "users", auth.currentUser.uid), {
+            photoURL: downloadURL,
+          });
+
+          await auth.currentUser.reload(); // Refresh user data
+
+          toast.success("Profile photo updated!");
+          setSelectedFile(null);
+          setIsUploading(false);
+        }
+      );
+    } catch (error) {
+      setIsUploading(false);
+      toast.error("Error: " + error.message);
+    }
   };
 
   return (
@@ -189,16 +241,15 @@ const Navbar = ({ toggleFav }) => {
             onClick={toggleShowDropdown}
             className="lg:ml-5 w-10 h-10 rounded-full flex items-center justify-center bg-green-100 hover:bg-green-200 transition"
           >
-            <img
-              src={
-                currentUser ? (
-                  currentUser.photoURL
-                ) : (
-                  <AiOutlineUser className="w-6 h-6" />
-                )
-              }
-              alt="heh"
-            />
+            {currentUser && currentUser.photoURL ? (
+              <img
+                src={currentUser.photoURL}
+                alt="User"
+                className="w-8 h-8 rounded-full object-cover"
+              />
+            ) : (
+              <AiOutlineUser className="w-6 h-6" />
+            )}
           </button>
           {showDropdown && (
             <div
@@ -206,7 +257,28 @@ const Navbar = ({ toggleFav }) => {
               className="bg-white text-center absolute top-24 p-4 shadow-lg text-xl font-medium rounded-md w-40"
             >
               {currentUser ? (
-                <span onClick={logout}>Logout</span>
+                <div>
+                  <span onClick={logout} className="cursor-pointer block mb-2">
+                    Logout
+                  </span>
+
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handlePhotoChange}
+                    className="block my-2 text-sm"
+                  />
+
+                  {selectedFile && (
+                    <button
+                      onClick={handlePhotoUpload}
+                      className="mt-2 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 transition"
+                      disabled={isUploading}
+                    >
+                      {isUploading ? "Uploading..." : "Save Photo"}
+                    </button>
+                  )}
+                </div>
               ) : (
                 <div>
                   <Link

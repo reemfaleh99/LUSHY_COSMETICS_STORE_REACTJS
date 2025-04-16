@@ -6,30 +6,39 @@ import { favAction } from "../../redux/slices/favSlice";
 import { cartAction } from "../../redux/slices/cartSlice";
 import { toast } from "react-toastify";
 
-const AccordionFavorite = () => {
+const AccordionFavorite = ({ isOpen, closeFav }) => {
   const favItems = useSelector((state) => state.fav.favItems);
 
   return (
     <div
-      className="fixed bg-green-100 top-0 left-0 p-4 md:p-8 w-full lg:w-1/4 z-50 h-[100vh]
-     no-scrollbar overflow-y-auto"
+      onClick={(e) => e.stopPropagation()}
+      className={`fixed top-0 left-0 h-full w-full lg:w-1/4 bg-green-100 z-50 overflow-y-auto no-scrollbar
+      transition-transform duration-300 ease-in-out transform
+      ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
     >
-      <h3 className="text-left font-edu font-semibold text-2xl my-8">
-        Favourite
-      </h3>
+      <button
+        onClick={closeFav}
+        className="absolute top-4 right-4 text-sm text-red-600 font-bold"
+      >
+        ✕
+      </button>
 
-      {favItems.length > 0 ? (
-        favItems.map((item, index) => <FavItem product={item} key={index} />)
-      ) : (
-        <p className="text-center text-gray-500">No favourite items found.</p>
-      )}
+      <div className="p-4 md:p-8">
+        <h3 className="text-left font-edu font-semibold text-2xl my-8">
+          Favourite
+        </h3>
+
+        {favItems.length > 0 ? (
+          favItems.map((item, index) => <FavItem product={item} key={index} />)
+        ) : (
+          <p className="text-center text-gray-500">No favourite items found.</p>
+        )}
+      </div>
     </div>
   );
 };
 
 const FavItem = ({ product }) => {
-  console.log("Product:", product);
-
   const dispatch = useDispatch();
 
   const addToCart = () => {
@@ -47,11 +56,9 @@ const FavItem = ({ product }) => {
   const deleteProduct = () => {
     dispatch(favAction.deleteItem({ id: product.id }));
   };
+
   return (
-    <div
-      className="bg-white my-4 p-4 rounded-xl flex flex-col lg:flex-row  items-center gap-4"
-      key={product.id}
-    >
+    <div className="bg-white my-4 p-4 rounded-xl flex flex-col lg:flex-row items-center gap-4">
       <div className="w-1/4">
         <img src={product.imgUrl} alt="" className="w-28 h-28 rounded-xl" />
       </div>

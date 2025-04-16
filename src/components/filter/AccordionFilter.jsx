@@ -56,6 +56,8 @@ const AccordionFilter = ({ items, onBrandChange, depts, onPriceChange }) => {
             }`}
           >
             <div className="px-4 py-2 bg-green-100">
+              {item.category && <div className="mb-2">{item.category}</div>}
+
               {item.filterItems &&
                 item.filterItems.map((filterItem, idx) => (
                   <div key={idx} className="flex items-center mx-5 my-2">
@@ -67,23 +69,11 @@ const AccordionFilter = ({ items, onBrandChange, depts, onPriceChange }) => {
                         checked={selectedBrands.includes(filterItem.name)}
                         onChange={() => handleBrandChange(filterItem.name)}
                       />
-                    ) : item.id === 3 || item.id === 8 ? (
-                      <input
-                        type="checkbox"
-                        id={filterItem.path}
-                        className="mr-2"
-                        checked={selectedDepts.includes(filterItem.name)}
-                        onChange={() => handleDeptChange(filterItem.name)}
-                      />
-                    ) : item.id === 4 || item.id === 9 ? (
-                      <input
-                        type="checkbox"
-                        id={filterItem.path}
-                        className="mr-2"
-                        checked={selectedDepts.includes(filterItem.name)}
-                        onChange={() => handleDeptChange(filterItem.name)}
-                      />
-                    ) : item.id === 10 ? (
+                    ) : item.id === 3 ||
+                      item.id === 8 ||
+                      item.id === 4 ||
+                      item.id === 9 ||
+                      item.id === 10 ? (
                       <input
                         type="checkbox"
                         id={filterItem.path}
@@ -102,8 +92,8 @@ const AccordionFilter = ({ items, onBrandChange, depts, onPriceChange }) => {
                   </div>
                 ))}
 
-              {item.id === 5 || item.id === 11 ? (
-                <div key={index} className="flex items-center mx-5 my-2">
+              {(item.id === 5 || item.id === 11) && (
+                <div className="flex items-center mx-5 my-2">
                   <p>Price Range</p>
                   <div>
                     ${priceValue[0]} - ${priceValue[1]}
@@ -117,7 +107,7 @@ const AccordionFilter = ({ items, onBrandChange, depts, onPriceChange }) => {
                     value={priceValue}
                   />
                 </div>
-              ) : null}
+              )}
             </div>
           </div>
         </div>

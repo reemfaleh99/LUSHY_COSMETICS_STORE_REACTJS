@@ -6,6 +6,8 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { toast } from "react-toastify";
 
+import Loading from "../components/loading/Loading";
+
 const Users = () => {
   const { data: userData, loading } = useGetData("users");
 
@@ -36,7 +38,7 @@ const Users = () => {
         </thead>
         <tbody className="text-center">
           {loading ? (
-            <h2>loading...</h2>
+            <Loading />
           ) : (
             userData.map((item) => (
               <tr key={item.id}>

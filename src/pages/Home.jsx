@@ -18,7 +18,7 @@ const Home = () => {
 
   useEffect(() => {
     const filteredBestsellerProducts = products.filter(
-      (item) => item.type === "bestseller"
+      (item) => item.type === "bestselling"
     );
     const filteredFeatureProducts = products.filter(
       (item) => item.type === "featured"

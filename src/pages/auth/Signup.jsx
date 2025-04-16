@@ -22,6 +22,7 @@ import { storage } from "../../firebase.config";
 import { db } from "../../firebase.config";
 
 import { toast } from "react-toastify";
+import Loading from "../../components/loading/Loading";
 
 const Signup = () => {
   const [show, setShow] = useState();
@@ -97,7 +98,7 @@ const Signup = () => {
     <Helmet title="Signup">
       <section className="login flex items-center justify-center">
         {loading ? (
-          <h5>loading..</h5>
+          <Loading />
         ) : (
           <div
             className="bg-gradient-to-t from-gray-100 to-green-100 p-10 rounded-xl flex flex-col gap-5 items-center

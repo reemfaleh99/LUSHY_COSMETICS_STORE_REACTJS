@@ -16,6 +16,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase.config";
 
 import { toast } from "react-toastify";
+import Loading from "../../components/loading/Loading";
 
 const Login = () => {
   const [show, setShow] = useState();
@@ -57,7 +58,7 @@ const Login = () => {
     <Helmet title="Login">
       <section className="login flex items-center justify-center">
         {loading ? (
-          <h5>Loading..</h5>
+          <Loading />
         ) : (
           <div className=" my-36 bg-gradient-to-t from-gray-100 to-green-100 p-10 rounded-xl flex flex-col gap-5 items-center justify-center">
             <AiOutlineLogin className="w-16 h-16 bg-white rounded-xl p-3" />

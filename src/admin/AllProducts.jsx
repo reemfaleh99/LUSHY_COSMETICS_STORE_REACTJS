@@ -5,6 +5,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { AiFillDelete } from "react-icons/ai";
 import { toast } from "react-toastify";
+import Loading from "../components/loading/Loading";
 
 const AllProducts = () => {
   const { data: productsData, loading } = useGetData("products");
@@ -15,7 +16,7 @@ const AllProducts = () => {
   };
 
   return (
-    <section className="mt-36">
+    <section className="mt-24">
       <table className="w-full ">
         <thead>
           <tr class="bg-green-200 ">
@@ -38,12 +39,15 @@ const AllProducts = () => {
         </thead>
         <tbody className="text-center">
           {loading ? (
-            <h2>loading...</h2>
+            <Loading />
           ) : (
             productsData.map((item) => (
-              <tr key={item.id}>
-                <td>
-                  <img src={item.imgUrl} alt="" className="w-12" />
+              <tr
+                key={item.id}
+                className="font-medium border-b-2 border-green-200 text-lg"
+              >
+                <td className="p-3">
+                  <img src={item.imgUrl} alt="" className="w-16" />
                 </td>
                 <td>{item.productName}</td>
                 <td>{item.price}</td>
@@ -51,9 +55,9 @@ const AllProducts = () => {
                 <td>
                   <span
                     onClick={() => deleteProduct(item.id)}
-                    className="flex justify-center items-center"
+                    className="flex justify-center items-center cursor-pointer"
                   >
-                    <AiFillDelete />
+                    <AiFillDelete className="w-6 h-6" />
                   </span>
                 </td>
               </tr>
